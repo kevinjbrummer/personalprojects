@@ -6,16 +6,21 @@ import os
 class Address_book():
     def __init__(self):
         self.initialize()
-
+    #create the main address book window
     def initialize(self):
+        
+        #First, initialize a tkinter window
         self.root = tkinter.Tk()
         self.root.title('Address Book')
         self.root.grid()
-
+        
+        #Next, set up a list box to hold all of the contact names
         self.contacts = tkinter.Listbox(self.root, height=40, width=30)
         self.contacts.grid(rowspan=12, column=0)
         self.contacts.bind('<<ListboxSelect>>', self.display_contact)
 
+        #Set up labels and label frames for all the variables
+        #in the address book
         self.name_var = StringVar()
         name1 = tkinter.LabelFrame(self.root, text='Name')
         name1.grid(row=0, column=1)
@@ -67,7 +72,7 @@ class Address_book():
         self.cell_var = StringVar()
         cell1 = tkinter.LabelFrame(self.root, text='Cell Phone')
         cell1.grid(row=8, column=1)
-        cell2 = tkinter.Label(cell1, textvariable=self.home_var)
+        cell2 = tkinter.Label(cell1, textvariable=self.cell_var)
         cell2.pack()
 
         self.email_var = StringVar()
@@ -88,20 +93,26 @@ class Address_book():
         notes2 = tkinter.Label(notes1, textvariable=self.notes_var)
         notes2.pack()
         
-
+        #Create the close button and the add button
         closebtn = tkinter.Button(self.root,
                                   text='Close',
                                   command = self.root.destroy)
         closebtn.grid(row=12, column=0)
+        
         addbtn = tkinter.Button(self.root,
                                 text='Add',
                                 command=self.add_contact)
         addbtn.grid(row=12, column=1)
 
+        #Open a pickle file to read the dictionary containing
+        #the address book information
+        #The saved dictionary is a nested dictionary
         file = open('contacts.pkl', 'rb')
         output = pickle.load(file)
         self.contact_dict = output
         file.close()
+
+        #add the saved data to the listbox
         for i in self.contact_dict:
             self.contacts.insert(END, self.contact_dict[i]['Name'])
 
@@ -109,11 +120,14 @@ class Address_book():
 
         self.root.mainloop()
 
-
+    #funtion to add a contact to the main window's list box
     def add_contact(self):
+        
+        #initialize the window
         self.add_root = tkinter.Tk()
         self.add_root.grid()
 
+        #Add all the labels and entry boxes for the address book variables
         namelbl = Label(self.add_root, text='Name:')
         namelbl.grid(row=0, column=0)
         self.name = Entry(self.add_root)
@@ -174,7 +188,7 @@ class Address_book():
         self.notes = Entry(self.add_root)
         self.notes.grid(row=11, column=1)
 
-
+        #add the close button and the add button
         closebtn = tkinter.Button(self.add_root,
                                   text='Close',
                                   command = self.add_root.destroy)
@@ -187,6 +201,9 @@ class Address_book():
 
         self.add_root.mainloop()
 
+    #this function creates a temporary dictionary to store the inputted
+    #data fro the add window. Then it updates the saved list with the new
+    #contact. Finally, it writes the new information to the saved pickle file
     def update_list(self):
         temp_contact = {'Name':self.name.get(),
                         'Address1':self.address1.get(),
@@ -207,6 +224,8 @@ class Address_book():
         pickle.dump(self.contact_dict, contact_file)
         contact_file.close()
 
+    #When an item in the listbox is selected, this funtion will display all
+    #of the information to the right of the listbox on the main window.
     def display_contact(self, event):
         selection = event.widget.curselection()
         if selection:
