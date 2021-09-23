@@ -6,7 +6,7 @@ iss = turtle.Turtle()
 def setup(screen):
     global iss
     screen.setup(1000, 500)
-    screen.bgpic('../headfirstlearntocode-master/ch10/earth.gif')
+    screen.bgpic('earth.gif')
     screen.setworldcoordinates(-180, -90, 180, 90)
     turtle.register_shape('../headfirstlearntocode-master/ch10/iss.gif')
     iss.shape('../headfirstlearntocode-master/ch10/iss.gif')
