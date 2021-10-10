@@ -21,9 +21,8 @@ def create_grid(start, end, show=False):
         pygame.draw.line(grid, 'White', (0, i), (500, i))
         FPS = pygame.time.Clock()
         FPS.tick()
-        found = False
 
-    while not found:
+    while True:
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -43,7 +42,6 @@ def create_grid(start, end, show=False):
                 start_time = time.time()
                 route = astar_search.astar_search(start, end, matrix, grid, show)
                 end_time = time.time() - start_time
-                found = True
                 if route != None:
                     for xy in route:
                         pygame.draw.polygon(grid, 'Pink ', box(xy))
